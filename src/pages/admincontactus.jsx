@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import SuperAdminSidebar from "../component/dashboardsidebar";
@@ -8,7 +9,10 @@ import Avaterimg from '../assets/img/avatar image.png';
 
 const Admincontactus = () => {
   const [searchQuery, setSearchQuery] = useState("");
- 
+  const navigate = useNavigate();
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedContent, setSelectedContent] = useState(null);
 
   const [users, setUsers] = useState([
     {
@@ -58,14 +62,19 @@ const Admincontactus = () => {
     return index % 2 === 0 ? '#ffffff' : '#EEEEEE';
   };
 
+
   const handleViewContent = (item) => {
-    console.log('View content:', item);
+    setSelectedContent(item);
+    setShowViewModal(true);
   };
 
   const handleEditClick = (item) => {
-    console.log('Edit item:', item);
+    navigate('/editblog'); // Navigate to EditBlog page
   };
-
+  const handleDelete = () => {
+    setUsers(users.filter(user => user.id !== selectedContent.id));
+    setShowDeleteModal(false);
+  }
   return (
     <div>
       <SuperAdminSidebar />
@@ -127,8 +136,8 @@ const Admincontactus = () => {
                 <select
                   className="form-select form-select-sm"
                   style={{
-                    width: "auto", 
-                    display: "inline-block", 
+                    width: "auto",
+                    display: "inline-block",
                     marginRight: "0px",
                     color: '#070759',
                     backgroundColor: '#EEEEEE',
@@ -195,27 +204,27 @@ const Admincontactus = () => {
                   >
                     <i className="bi bi-filter" style={{ fontSize: '28px' }}></i>
                   </div>
-
+                  {/* Add Button */}
                   <div
                     className="rounded-circle d-flex align-items-center justify-content-center"
                     style={{
-                      width: '45px',
-                      height: '45px',
-                      backgroundColor: '#070759',
-                      color: '#fff',
-                      cursor: 'pointer',
+                      width: "45px",
+                      height: "45px",
+                      backgroundColor: "#070759",
+                      color: "#fff",
+                      cursor: "pointer",
                     }}
-                    onClick={() => setShowModal(true)}
+                    onClick={() => navigate("/addblog")}
                   >
-                    <i className="bi bi-plus-lg" style={{ fontSize: '20px' }}></i>
+                    <i className="bi bi-plus-lg" style={{ fontSize: "20px" }}></i>
                   </div>
                 </div>
               </Col>
             </Row>
           </Card.Header>
-          
+
           <Card.Body className="border-0" style={{ backgroundColor: '#f8f9fa' }}>
-            <Table  hover className="table-modern border-0 borderless-table">
+            <Table hover className="table-modern border-0 borderless-table">
               <thead style={{ backgroundColor: '#f8f9fa' }}>
                 <tr>
                   <th style={{ color: '#070759' }}>S.No</th>
@@ -240,11 +249,11 @@ const Admincontactus = () => {
                         <img
                           src={item.image}
                           alt="Content"
-                          style={{ 
-                            width: "50px", 
-                            height: "50px", 
-                            borderRadius: "5px", 
-                            objectFit: "cover" 
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "5px",
+                            objectFit: "cover"
                           }}
                         />
                       </td>
@@ -263,53 +272,31 @@ const Admincontactus = () => {
                       >
                         {item.content}
                       </td>
-                      <td 
-                        className="d-flex gap-2 align-items-center justify-content-center" 
+                      <td
+                        className="d-flex gap-2 align-items-center justify-content-center"
                         style={{ backgroundColor: rowBgColor }}
                       >
                         <Button
-                          variant="info"
                           size="sm"
-                          className="rounded-circle d-flex align-items-center justify-content-center"
-                          style={{ 
-                            width: '30px', 
-                            height: '30px', 
-                            backgroundColor: '#0253F269',
-                            border: 'none'
-                          }}
+                          className="rounded-circle"
+                          style={{ width: '30px', height: '30px', backgroundColor: '#0253F269', border: 'none' }}
                           onClick={() => handleViewContent(item)}
                         >
                           <FontAwesomeIcon icon={faEye} style={{ color: 'black' }} />
                         </Button>
                         <Button
-                          variant="warning"
                           size="sm"
-                          className="rounded-circle d-flex align-items-center justify-content-center"
-                          style={{ 
-                            width: '30px', 
-                            height: '30px', 
-                            backgroundColor: '#F4A10069',
-                            border: 'none'
-                          }}
+                          className="rounded-circle"
+                          style={{ width: '30px', height: '30px', backgroundColor: '#F4A10069', border: 'none' }}
                           onClick={() => handleEditClick(item)}
                         >
                           <FontAwesomeIcon icon={faEdit} style={{ color: 'black' }} />
                         </Button>
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          className="rounded-circle d-flex align-items-center justify-content-center"
-                          style={{ 
-                            width: '30px', 
-                            height: '30px', 
-                            backgroundColor: '#EE7C7C',
-                            border: 'none'
-                          }}
+                        <Button size="sm" className="rounded-circle" style={{ backgroundColor: '#EE7C7C', border: 'none', width: 30, height: 30 }}
                           onClick={() => {
-                            setShowDeleteModal(true);
                             setSelectedContent(item);
-                          }}
-                        >
+                            setShowDeleteModal(true);
+                          }}>
                           <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
                         </Button>
                       </td>
@@ -319,7 +306,7 @@ const Admincontactus = () => {
               </tbody>
             </Table>
           </Card.Body>
-          
+
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between" style={{ backgroundColor: '#F9F9F9' }}>
             <small className="fw-bold">
               Showing 1 to 10 of 7000 entries
@@ -353,6 +340,82 @@ const Admincontactus = () => {
           </Card.Footer>
         </Card>
       </div>
+
+
+      {/* Delete Confirmation Modal */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+        <Modal.Body className="text-center p-4">
+          <h5 style={{ color: '#A2A2A2', marginBottom: '10px' }}>User Contact details Delete</h5>
+          <p style={{ fontWeight: 600, fontSize: '16px' }}>
+            Are you sure want to delete<br />
+            this User Contact details details?
+          </p>
+          <p style={{ fontStyle: 'italic', fontWeight: '600', fontSize: '18px' }}>
+            “{selectedContent?.author}”
+          </p>
+          <div className="d-flex justify-content-center gap-3 mt-4">
+            <Button
+              onClick={handleDelete}
+              style={{ backgroundColor: '#1C0F4D', border: 'none', padding: '6px 24px', borderRadius: '8px' }}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="outline-dark"
+              onClick={() => setShowDeleteModal(false)}
+              style={{ border: '1px solid #1C0F4D', padding: '6px 24px', borderRadius: '8px' }}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* View Contact Modal */}
+      <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered backdrop="static">
+        <Modal.Body className="text-center p-4">
+          <h5 style={{ color: '#A2A2A2', marginBottom: '10px' }}>View User Contact details</h5>
+          <h6 style={{ color: '#1C0F4D', fontWeight: 600, marginBottom: '20px' }}>User Contact details</h6>
+
+          <div className="text-start" style={{ fontSize: '14px' }}>
+            <Row className="mb-2">
+              <Col xs={5} className="text-primary fw-semibold">First Name</Col>
+              <Col>{selectedContent?.author?.split(" ")[0]}</Col>
+            </Row>
+            <Row className="mb-2">
+              <Col xs={5} className="text-primary fw-semibold">Last Name</Col>
+              <Col>{selectedContent?.author?.split(" ")[1]}</Col>
+            </Row>
+            <Row className="mb-2">
+              <Col xs={5} className="text-primary fw-semibold">Email-ID</Col>
+              <Col>ramkumar@gmail.com</Col> {/* Replace with actual data if available */}
+            </Row>
+            <Row className="mb-2">
+              <Col xs={5} className="text-primary fw-semibold">Mobile Number</Col>
+              <Col>7826379021</Col> {/* Replace with actual data if available */}
+            </Row>
+            <Row className="mb-2">
+              <Col xs={5} className="text-primary fw-semibold">Message</Col>
+              <Col>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Feugiat nulla suspendisse tortor aene.</Col>
+            </Row>
+          </div>
+
+          <Button
+            onClick={() => setShowViewModal(false)}
+            style={{
+              backgroundColor: '#1C0F4D',
+              border: 'none',
+              padding: '6px 24px',
+              borderRadius: '8px',
+              marginTop: '25px'
+            }}
+          >
+            Close
+          </Button>
+        </Modal.Body>
+      </Modal>
+
+
     </div>
   );
 }
