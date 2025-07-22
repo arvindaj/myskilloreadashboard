@@ -1,0 +1,59 @@
+.dashboardcard {
+  background-color: #F9F9F9;
+  height: 120px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.dashboardcard h5 {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  font-size: 1rem;
+}
+
+.dashboardcard h2 {
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  font-size: 2.5rem;
+  margin: 0;
+}
+
+.dashboardcard h3 {
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.dashboardcard h4 {
+  position: absolute;
+  left: 20px;
+  bottom: 10px;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.dashboardcard small {
+  font-size: 0.8rem;
+}
+
+.blogtitel{
+  color: rgb(2, 2, 102);
+}
+
+.top-dashboard {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.profile-section img {
+  object-fit: cover;
+}
+
+.profile-section span {
+  font-size: 14px;
+  color: #333;
+}
