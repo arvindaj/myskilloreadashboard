@@ -3,6 +3,7 @@
   height: 120px;
   position: relative;
   border-radius: 10px;
+  border: none !important;
 }
 
 .dashboardcard h5 {
@@ -40,13 +41,12 @@
   font-size: 0.8rem;
 }
 
-.blogtitel{
+.blogtitel {
   color: rgb(2, 2, 102);
 }
 
 .top-dashboard {
   background-color: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
 }
 
 .profile-section img {
@@ -56,4 +56,110 @@
 .profile-section span {
   font-size: 14px;
   color: #333;
+}
+
+.custom-pagination .page-item .page-link {
+  color: black;
+  /* Sets the text color of pagination items to black */
+}
+
+.custom-pagination .page-item.active .page-link {
+  background-color: #070759;
+  /* Black background for active item */
+  color: white;
+  /* White text for active item */
+  border-color: black;
+  /* Black border for active item */
+}
+
+.custom-pagination .page-item:not(.active) .page-link:hover {
+  background-color: #e0e0e0;
+  /* Light gray background on hover for non-active items */
+  color: black;
+  /* Keep text black on hover */
+}
+
+.custom-pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  /* Gray out disabled items for contrast */
+}
+
+.pagination-arrow {
+  font-size: 1rem;
+  /* Keep arrow size consistent */
+  color: #000;
+}
+
+.custom-select {
+  /* Remove default arrow */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Add custom arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23070759' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2rem;
+  /* Ensure space for the arrow */
+}
+
+
+/* Remove borders from the table */
+.borderless-table {
+  border: none !important;
+}
+
+.borderless-table th,
+.borderless-table td {
+  border: none !important;
+  padding: 12px 15px; /* Adjust padding for better spacing */
+  vertical-align: middle; /* Center content vertically */
+}
+
+/* Optional: Add a subtle background for alternating rows */
+.borderless-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa; /* Light gray for even rows */
+}
+
+/* Hover effect for rows */
+.borderless-table tbody tr:hover {
+  background-color: #e9ecef; /* Slightly darker on hover */
+}
+
+/* Style table headers */
+.borderless-table thead th {
+  font-weight: 600;
+  /* text-transform: uppercase; */
+  letter-spacing: 0.5px;
+  background-color: #f1f3f5 !important; /* Slightly darker header background */
+  color: #070759;
+}
+
+/* Ensure table is responsive */
+.borderless-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Optional: Add a subtle shadow to the table container for depth */
+.card.shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Improve typography for table content */
+.borderless-table td {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Style checkboxes */
+.borderless-table input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* Ensure images in table cells are well-styled */
+.borderless-table img {
+  border: 1px solid #e9ecef; /* Subtle border for images */
+  object-fit: cover;
 }

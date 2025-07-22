@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SuperAdminSidebar from "../component/dashboardsidebar";
-import { faEye, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Table, Card, Row, Col, Button, Modal, Form, Pagination, Nav } from "react-bootstrap";
 import { useState } from "react";
 import '../assets/css/superadmin/dasboard.css';
@@ -8,6 +6,12 @@ import Avaterimg from '../assets/img/avatar image.png';
 
 const Superadmin = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
+  const [selectedContent, setSelectedContent] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [editContent, setEditContent] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
   // Placeholder totals (replace with dynamic values later)
   const blogTotal = 120; // Example value
   const eventTotal = 45; // Example value
@@ -20,74 +24,45 @@ const Superadmin = () => {
       title: "Finance",
       date: "16, Feb 2024",
       author: "Diya Bhat",
-      content: "Lorem ipsum...",
+      content: "Lorem ipsum dolor sit amet consectetur...",
     },
     {
       id: 2,
       image: '/assets/images/superadmin/Contact.png',
-      title: "Finance",
-      date: "16, Feb 2024",
-      author: "Diya Bhat",
-      content: "Lorem ipsum...",
+      title: "Marketing",
+      date: "17, Feb 2024",
+      author: "John Doe",
+      content: "Lorem ipsum dolor sit amet...",
     },
     {
       id: 3,
       image: '/assets/images/superadmin/Contact.png',
-      title: "Finance",
-      date: "16, Feb 2024",
-      author: "Diya Bhat",
-      content: "Lorem ipsum...",
+      title: "Technology",
+      date: "18, Feb 2024",
+      author: "Jane Smith",
+      content: "Lorem ipsum dolor sit amet consectetur adipiscing...",
     },
     {
       id: 4,
       image: '/assets/images/superadmin/Contact.png',
-      title: "Finance",
-      date: "16, Feb 2024",
-      author: "Diya Bhat",
-      content: "Lorem ipsum...",
+      title: "Health",
+      date: "19, Feb 2024",
+      author: "Mike Johnson",
+      content: "Lorem ipsum dolor sit amet consectetur adipiscing elit...",
     },
     {
       id: 5,
       image: '/assets/images/superadmin/Contact.png',
-      title: "Finance",
-      date: "16, Feb 2024",
-      author: "Diya Bhat",
-      content: "Lorem ipsum...",
+      title: "Education",
+      date: "20, Feb 2024",
+      author: "Sarah Wilson",
+      content: "Lorem ipsum dolor sit amet consectetur...",
     },
- 
   ]);
 
-  const [showModal, setShowModal] = useState(false);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editContent, setEditContent] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [newContent, setNewContent] = useState({
-    image: "",
-    title: "",
-    date: "",
-    author: "",
-    content: "",
-  });
-
-  const handleChange = (e) => {
-    setNewContent({ ...newContent, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files[0]) {
-      const fileURL = URL.createObjectURL(e.target.files[0]);
-      setNewContent({ ...newContent, image: fileURL });
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setUsers([...users, { ...newContent, id: users.length + 1 }]);
-    setShowModal(false);
-    setNewContent({ image: "", title: "", date: "", author: "", content: "" });
+  // Define alternating row colors
+  const getRowBackgroundColor = (index) => {
+    return index % 2 === 0 ? '#ffffff' : '#EEEEEE';
   };
 
   const handleViewContent = (content) => {
@@ -99,31 +74,6 @@ const Superadmin = () => {
     setEditContent(content);
     setSelectedImage(content.image); // Set initial image for preview
     setShowEditModal(true);
-  };
-
-  const handleEditChange = (e) => {
-    setEditContent({ ...editContent, [e.target.name]: e.target.value });
-  };
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const fileURL = URL.createObjectURL(file);
-      setSelectedImage(fileURL);
-      setEditContent({ ...editContent, image: fileURL });
-    }
-  };
-
-  const handleEditSubmit = (e) => {
-    e.preventDefault();
-    setUsers(users.map((user) => (user.id === editContent.id ? editContent : user)));
-    setShowEditModal(false);
-    setSelectedImage(null); // Reset image preview after submission
-  };
-
-  const handleDelete = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
-    setShowDeleteModal(false);
   };
 
   const visitsData = [
@@ -143,32 +93,57 @@ const Superadmin = () => {
         <div className="top-dashboard d-flex justify-content-between align-items-center p-3">
           <div className="left-section d-flex align-items-center">
             <h3>OverView</h3>
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="form-control ms-3"
-              style={{ width: "200px" }}
-            />
+            <div className="search-wrapper position-relative ms-3" style={{ width: "300px" }}>
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="form-control ps-5"
+                style={{ width: "100%", borderRadius: "8px", border: "1px solid #ced4da" }}
+              />
+              <span
+                className="position-absolute"
+                style={{
+                  left: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#6c757d",
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-search"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+              </span>
+            </div>
           </div>
           <div className="profile-section d-flex align-items-center">
             <img
               src={Avaterimg}
               alt="Kamisato Aya"
-              style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+              style={{ width: "60px", height: "60px", borderRadius: "50%", marginRight: "10px" }}
             />
-            <span>Kamisato Aya</span>
+            <div className="text-section d-flex flex-column">
+              <span className="fs-4">Kamisato Aya</span>
+              <h5 className="" style={{ color: '#C2C5D0', fontSize: '16px' }}>Manager</h5>
+            </div>
           </div>
         </div>
 
         <Row className="mt-4">
           <Col xs={12} md={4}>
-            <Card className="text-center shadow-sm">
+            <Card className="text-center shadow-sm border-0">
               <Card.Body className="dashboardcard">
                 <h5>Number Of Blog</h5>
                 <h2>{blogTotal}</h2>
-                <h3 style={{ color: '#FF4500' }}>
+                <h3 style={{ color: '#00C95C' }}>
                   ↑ 0.0% <br />
                   <small style={{ color: '#000000' }}>From last week</small>
                 </h3>
@@ -176,11 +151,11 @@ const Superadmin = () => {
             </Card>
           </Col>
           <Col xs={12} md={4}>
-            <Card className="text-center shadow-sm">
+            <Card className="text-center shadow-sm border-0">
               <Card.Body className="dashboardcard">
                 <h5>Number Of Event</h5>
                 <h2>{eventTotal}</h2>
-                <h3 style={{ color: '#FF4500' }}>
+                <h3 style={{ color: '#00C95C' }}>
                   ↑ 0.0% <br />
                   <small style={{ color: '#000000' }}>From last week</small>
                 </h3>
@@ -188,8 +163,8 @@ const Superadmin = () => {
             </Card>
           </Col>
           <Col xs={12} md={4}>
-            <Card className="text-center shadow-sm">
-              <Card.Body className="dashboardcard">
+            <Card className="text-center shadow-sm border-0">
+              <Card.Body className="dashboardcard ">
                 <h5>Number Of Contacts</h5>
                 <h2>{testimonialTotal}</h2>
                 <h3 style={{ color: '#FF4500' }}>
@@ -204,319 +179,94 @@ const Superadmin = () => {
         {/* Table */}
         <div className="col-md-9 col-lg-12">
           <div className="dashboard-content col-md-12">
-            <Card className="mt-4 shadow-sm">
-              <Card.Header>
-                <Row className="align-items-center">
+            <Card className="mt-4 shadow-sm border-0" style={{ backgroundColor: '#F9F9F9' }}>
+              <Card.Header className="bg-light border-0">
+                <Row className="align-items-center border-0 ">
                   <Col>
-                    <h5 className="blogtitel">User Blog List</h5>
-                  </Col>
-                  <Col className="text-end">
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: "auto", display: "inline-block", marginRight: "10px" }}
-                    >
-                      <option>Monthly</option>
-                      <option>Weekly</option>
-                    </select>
-                    <input
-                      type="text"
-                      placeholder="Search by Name..."
-                      className="form-control form-control-sm"
-                      style={{ width: "200px", display: "inline-block" }}
-                    />
-                    <Button
-                      className="btn-gradient-1 ms-2"
-                      size="sm"
-                      onClick={() => setShowModal(true)}
-                    >
-                      Add New Content
-                    </Button>
+                    <h5 className="blogtitel mb-0">User Blog List</h5>
                   </Col>
                 </Row>
               </Card.Header>
-              <Card.Body>
-                <Table responsive bordered hover>
-                  <thead className="thead-light" >
+              <Card.Body style={{ backgroundColor: '#f8f9fa' }}>
+                <Table responsive hover className="table-modern borderless-table">
+                  <thead style={{ backgroundColor: '#f8f9fa' }}>
                     <tr>
                       <th style={{ color: '#070759' }}>S.No</th>
-                      <th style={{ color: '#070759' }} >Image</th>
+                      <th style={{ color: '#070759' }}>Image</th>
                       <th style={{ color: '#070759' }}>Title</th>
                       <th style={{ color: '#070759' }}>Date</th>
                       <th style={{ color: '#070759' }}>Author</th>
                       <th style={{ color: '#070759' }}>Content</th>
-                      <th style={{ width: "50px", color: '#070759' }}>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>
-                          <img
-                            src={item.image}
-                            alt="Content"
-                            style={{ width: "50px", height: "50px", borderRadius: "5px" }}
-                          />
-                        </td>
-                        <td>{item.title}</td>
-                        <td>{item.date}</td>
-                        <td>{item.author}</td>
-                        <td
-                          className="text-truncate"
-                          style={{
-                            maxWidth: "200px",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          {item.content}
-                        </td>
-                        <td className="d-flex gap-2 align-items-center justify-content-center">
-                          <Button
-                            variant="info"
-                            size="sm"
-                            className="rounded-circle d-flex align-items-center justify-content-center"
-                            style={{ width: '40px', height: '40px' }}
-                            onClick={() => handleViewContent(item)}
-                          >
-                            <FontAwesomeIcon icon={faEye} style={{ color: 'white' }} />
-                          </Button>
-                          <Button
-                            variant="warning"
-                            size="sm"
-                            className="rounded-circle d-flex align-items-center justify-content-center"
-                            style={{ width: '40px', height: '40px' }}
-                            onClick={() => handleEditClick(item)}
-                          >
-                            <FontAwesomeIcon icon={faEdit} style={{ color: 'white' }} />
-                          </Button>
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            className="rounded-circle d-flex align-items-center justify-content-center"
-                            style={{ width: '40px', height: '40px' }}
-                            onClick={() => {
-                              setShowDeleteModal(true);
-                              setSelectedContent(item);
+                    {users.map((item, index) => {
+                      const rowBgColor = getRowBackgroundColor(index);
+                      return (
+                        <tr key={item.id}>
+                          <td style={{ backgroundColor: rowBgColor }}>
+                            <input type="checkbox" className="mx-2" />
+                            {item.id}
+                          </td>
+                          <td style={{ backgroundColor: rowBgColor }}>
+                            <img
+                              src={item.image}
+                              alt="Content"
+                              style={{ 
+                                width: "50px", 
+                                height: "50px", 
+                                borderRadius: "5px", 
+                                objectFit: "cover" 
+                              }}
+                            />
+                          </td>
+                          <td style={{ backgroundColor: rowBgColor }}>{item.title}</td>
+                          <td style={{ backgroundColor: rowBgColor }}>{item.date}</td>
+                          <td style={{ backgroundColor: rowBgColor }}>{item.author}</td>
+                          <td
+                            className="text-truncate"
+                            style={{
+                              maxWidth: "200px",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              backgroundColor: rowBgColor
                             }}
                           >
-                            <FontAwesomeIcon icon={faTrash} style={{ color: 'white' }} />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
+                            {item.content}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </Table>
               </Card.Body>
-              <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
+              <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between" style={{ backgroundColor: '#F9F9F9' }}>
                 <small className="fw-bold">
                   Showing 1 to 10 of 7000 entries
                 </small>
                 <Nav>
-                  <Pagination className="mb-2 mb-lg-0 custom-pagination">
-                    <Pagination.Prev>Previous</Pagination.Prev>
+                  <Pagination className="mb-2 mb-lg-0 custom-pagination text-black">
+                    <Pagination.First>
+                      <span className="pagination-arrow">«</span>
+                    </Pagination.First>
+                    <Pagination.Prev>
+                      <span className="pagination-arrow">‹</span>
+                    </Pagination.Prev>
                     <Pagination.Item active>1</Pagination.Item>
                     <Pagination.Item>2</Pagination.Item>
                     <Pagination.Item>3</Pagination.Item>
-                    <Pagination.Item>4</Pagination.Item>
-                    <Pagination.Item>5</Pagination.Item>
-                    <Pagination.Next>Next</Pagination.Next>
+                    <Pagination.Ellipsis />
+                    <Pagination.Next>
+                      <span className="pagination-arrow">›</span>
+                    </Pagination.Next>
+                    <Pagination.Last>
+                      <span className="pagination-arrow">»</span>
+                    </Pagination.Last>
                   </Pagination>
                 </Nav>
               </Card.Footer>
             </Card>
-
-            {/* Add New Content Modal */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-              <Modal.Header closeButton>
-                <Modal.Title>Add New Content</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Image</Form.Label>
-                    <Form.Control type="file" onChange={handleFileChange} />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      value={newContent.title}
-                      onChange={handleChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="date"
-                      value={newContent.date}
-                      onChange={handleChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Author</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="author"
-                      value={newContent.author}
-                      onChange={handleChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Content</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      name="content"
-                      value={newContent.content}
-                      onChange={handleChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Button className="btn-gradient-1" size="sm" type="submit">
-                    Save Changes
-                  </Button>
-                </Form>
-              </Modal.Body>
-            </Modal>
-
-            {/* View Content Modal */}
-            <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered>
-              <Modal.Header closeButton>
-                <Modal.Title>View Content</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                {selectedContent && (
-                  <div>
-                    <img
-                      src={selectedContent.image}
-                      alt="Content"
-                      style={{
-                        width: "100%",
-                        maxHeight: "200px",
-                        objectFit: "cover",
-                        borderRadius: "5px",
-                        marginBottom: "15px",
-                      }}
-                    />
-                    <h5>Title: {selectedContent.title}</h5>
-                    <p><strong>Date:</strong> {selectedContent.date}</p>
-                    <p><strong>Author:</strong> {selectedContent.author}</p>
-                    <p><strong>Content:</strong> {selectedContent.content}</p>
-                  </div>
-                )}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowViewModal(false)}>
-                  Close
-                </Button>
-              </Modal.Footer>
-            </Modal>
-
-            {/* Edit Content Modal */}
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
-              <Modal.Header closeButton>
-                <Modal.Title>Edit Content</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form onSubmit={handleEditSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Image</Form.Label>
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                    />
-                  </Form.Group>
-                  {selectedImage && (
-                    <div className="mb-3">
-                      <p>Image Preview:</p>
-                      <img
-                        src={selectedImage}
-                        alt="Preview"
-                        style={{
-                          width: "100%",
-                          maxHeight: "200px",
-                          objectFit: "cover",
-                          borderRadius: "5px",
-                        }}
-                      />
-                    </div>
-                  )}
-                  <Form.Group className="mb-3">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="title"
-                      value={editContent?.title || ""}
-                      onChange={handleEditChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="date"
-                      value={editContent?.date || ""}
-                      onChange={handleEditChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Author</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="author"
-                      value={editContent?.author || ""}
-                      onChange={handleEditChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Content</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      name="content"
-                      value={editContent?.content || ""}
-                      onChange={handleEditChange}
-                      required
-                    />
-                  </Form.Group>
-                  <Button className="btn-gradient-1" size="sm" type="submit">
-                    Save Changes
-                  </Button>
-                </Form>
-              </Modal.Body>
-            </Modal>
-
-            {/* Delete Content Modal */}
-            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-              <Modal.Header closeButton>
-                <Modal.Title>Confirm Deletion</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                Are you sure you want to delete this content?
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                  Cancel
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => handleDelete(selectedContent.id)}
-                >
-                  Delete
-                </Button>
-              </Modal.Footer>
-            </Modal>
           </div>
         </div>
       </div>

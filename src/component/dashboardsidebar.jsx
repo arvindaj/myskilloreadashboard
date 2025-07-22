@@ -75,26 +75,14 @@ const SuperAdminSidebar = () => {
                                     <FontAwesomeIcon icon={faBlog} className="me-2" /> Blog
                                 </Link>
                             </Nav.Item>
-                            <Nav.Item>
-                                <Link className="nav-link text-white" to="/AdminEvent">
-                                    <FontAwesomeIcon icon={faCalendarAlt} className="me-2" /> Events
-                                </Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Link className="nav-link text-white" to="/AdminTestimonials">
-                                    <FontAwesomeIcon icon={faCommentDots} className="me-2" /> Testimonials
-                                </Link>
-                            </Nav.Item>
+                           
+                            
                             <Nav.Item>
                                 <Link className="nav-link text-white" to="/AdmincContactForm">
                                     <FontAwesomeIcon icon={faAddressBook} className="me-2" /> Contact Us
                                 </Link>
                             </Nav.Item>
-                            <Nav.Item>
-                                <Button variant="link" className="nav-link text-white" onClick={() => setShowLogoutModal(true)}>
-                                    <FontAwesomeIcon icon={faSignOutAlt} className="me-2" /> Logout
-                                </Button>
-                            </Nav.Item>
+                           
                             {/* Logout Confirmation Modal */}
                             <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
                                 <Modal.Header closeButton>

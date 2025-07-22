@@ -3,292 +3,358 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import SuperAdminSidebar from "../component/dashboardsidebar";
 import { Table, Card, Row, Col, Button, Modal, Form, Pagination, Nav } from "react-bootstrap";
+import '../assets/css/superadmin/dasboard.css';
+import Avaterimg from '../assets/img/avatar image.png';
 
+const Admincontactus = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+ 
 
-const AdmincContactForm = () => {
+  const [users, setUsers] = useState([
+    {
+      id: 1,
+      image: '/assets/images/superadmin/Contact.png',
+      title: "Finance",
+      date: "16, Feb 2024",
+      author: "Diya Bhat",
+      content: "Lorem ipsum...",
+    },
+    {
+      id: 2,
+      image: '/assets/images/superadmin/Contact.png',
+      title: "Marketing",
+      date: "17, Feb 2024",
+      author: "John Doe",
+      content: "Lorem ipsum dolor sit amet...",
+    },
+    {
+      id: 3,
+      image: '/assets/images/superadmin/Contact.png',
+      title: "Technology",
+      date: "18, Feb 2024",
+      author: "Jane Smith",
+      content: "Lorem ipsum dolor sit amet consectetur...",
+    },
+    {
+      id: 4,
+      image: '/assets/images/superadmin/Contact.png',
+      title: "Health",
+      date: "19, Feb 2024",
+      author: "Mike Johnson",
+      content: "Lorem ipsum dolor sit amet consectetur adipiscing...",
+    },
+    {
+      id: 5,
+      image: '/assets/images/superadmin/Contact.png',
+      title: "Education",
+      date: "20, Feb 2024",
+      author: "Sarah Wilson",
+      content: "Lorem ipsum dolor sit amet consectetur adipiscing elit...",
+    },
+  ]);
 
-    const [users, setUsers, userId] = useState([
-        {
-            id: 1,
-            image: '/assets/images/superadmin/Contact.png',
-            title: "Admin ContactForm ",
-            shortTitle: "ContactForm Admin",
-            description: "This blog post from User Interviews knocks two things out of the park. One, the headline sets clear expectations for readers but also sparks curiosity by going against the usual “How to Conduct a Phenomenal Focus Group” approach.Two, the opening line works because it goes against the grain also. It reels readers in by making a controversial statement while also touching on pain points readers want to avoid. ",
-        },
-        {
-            id: 2,
-            image: '/assets/images/superadmin/Contact.png',
-            title: "Editor ContactForm Tools",
-            shortTitle: "ContactForm Editor",
-            description: "We like this post from Hopin for a few reasons. The headline shows a bit of personality without comprising clarity. The intro gets readers engaged by putting them in an imaginary scenario that drives home the importance of the topic. Plus, Hopin makes great use of white space, headings, and lists to make the post easy to skim. ",
-        },
-        {
-            id: 3,
-            image: '/assets/images/superadmin/Game development.png',
-            title: "User ContactForm Reports",
-            shortTitle: "ContactForm Reports",
-            description: "View reports and analytics of user activity and trends.",
-        },
-    ]);
+  // Define alternating row colors
+  const getRowBackgroundColor = (index) => {
+    return index % 2 === 0 ? '#ffffff' : '#EEEEEE';
+  };
 
-    const [showModal, setShowModal] = useState(false);
-    const [showViewModal, setShowViewModal] = useState(false);
-    const [selectedContent, setSelectedContent] = useState(null);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [editContent, setEditContent] = useState(null);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [newContent, setNewContent] = useState({
-        image: "",
-        title: "",
-        shortTitle: "",
-        description: "",
-    });
+  const handleViewContent = (item) => {
+    console.log('View content:', item);
+  };
 
-    const handleChange = (e) => {
-        setNewContent({ ...newContent, [e.target.name]: e.target.value });
-    };
+  const handleEditClick = (item) => {
+    console.log('Edit item:', item);
+  };
 
-    const handleFileChange = (e) => {
-        if (e.target.files[0]) {
-            const fileURL = URL.createObjectURL(e.target.files[0]);
-            setNewContent({ ...newContent, image: fileURL });
-        }
-    };
+  return (
+    <div>
+      <SuperAdminSidebar />
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setUsers([...users, { ...newContent, id: users.length + 1 }]);
-        setShowModal(false);
-        setNewContent({ image: "", title: "", shortTitle: "", description: "" });
-    };
-
-    const handleViewContent = (content) => {
-        setSelectedContent(content);
-        setShowViewModal(true);
-    };
-
-    const handleEditClick = (content) => {
-        setEditContent(content);
-        setShowEditModal(true);
-    };
-
-    const handleEditChange = (e) => {
-        setEditContent({ ...editContent, [e.target.name]: e.target.value });
-    };
-
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        setUsers(users.map((user) => (user.id === editContent.id ? editContent : user)));
-        setShowEditModal(false);
-    };
-    const handleDelete = () => {
-        setUsers(users.filter((user) => user.id !== userId));
-        setShowDeleteModal(false);
-    };
-
-    const visitsData = [
-        { page: "/dashboard", visits: 1200, unique: 800 },
-        { page: "/settings", visits: 900, unique: 600 },
-        { page: "/reports", visits: 1100, unique: 750 },
-    ];
-
-    const totalTransactions = visitsData.length;
-
-
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setSelectedImage(URL.createObjectURL(file));
-        }
-    }
-
-    return (
-        <div>
-            <SuperAdminSidebar />
-            <div className="superadmin-content col-md-9 col-lg-10">
-                {/* <h3>Welcome to Blog Dashboard</h3> */}
-
-                <Card className="mt-4 shadow-sm">
-                    <Card.Header>
-                        <Row className="align-items-center">
-                            <Col>
-                                <h5>ContactForm Management</h5>
-                            </Col>
-                            <Col className="text-end">
-                                <Button className="btn-gradient-1" size="sm" onClick={() => setShowModal(true)}>
-                                    Add New Content
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Card.Header>
-                    <Card.Body>
-                        <Table responsive bordered hover>
-                            <thead className="thead-light">
-                                <tr>
-                                    <th>S/no</th>
-                                    <th style={{ width: "100px" }}>Image</th>
-                                    <th>Title</th>
-                                    <th>Shortening Title</th>
-                                    <th style={{ width: "350px" }}>Description</th>
-                                    <th style={{ width: "50px" }}>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>
-                                            <img src={item.image} alt="Content" style={{ width: "100px", height: "40px", borderRadius: "5px" }} />
-                                        </td>
-                                        <td>{item.title}</td>
-                                        <td>{item.shortTitle}</td>
-                                        <td className="text-truncate" style={{ maxWidth: "450px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                            {item.description}
-                                        </td>
-                                        <td className="d-flex gap-2">
-                                            <Button variant="info" size="sm" onClick={() => handleViewContent(item)}>
-                                                <FontAwesomeIcon icon={faEye} style={{ color: "white" }} />
-                                            </Button>
-
-                                            <Button variant="warning" size="sm" onClick={() => handleEditClick(item)}>
-                                                <FontAwesomeIcon icon={faEdit} style={{ color: "white" }} />
-                                            </Button>
-
-                                            <Button variant="danger" size="sm" onClick={() => setShowDeleteModal(true)}>
-                                                <FontAwesomeIcon icon={faTrash} style={{ color: "white" }} />
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                        {/* Page Visits Table */}
-                    </Card.Body>
-                    <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
-                        <small className="fw-bold">
-                            Showing <b>{totalTransactions}</b> out of <b>25</b> entries
-                        </small>
-                        <Nav>
-                            <Pagination className="mb-2 mb-lg-0">
-                                <Pagination.Prev>Previous</Pagination.Prev>
-                                <Pagination.Item active>1</Pagination.Item>
-                                <Pagination.Item>2</Pagination.Item>
-                                <Pagination.Item>3</Pagination.Item>
-                                <Pagination.Item>4</Pagination.Item>
-                                <Pagination.Item>5</Pagination.Item>
-                                <Pagination.Next>Next</Pagination.Next>
-                            </Pagination>
-                        </Nav>
-                    </Card.Footer>
-                </Card>
-
-                <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add New ContactForm</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Image</Form.Label>
-                                <Form.Control type="file" onChange={handleFileChange} />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" name="title" value={newContent.title} onChange={handleChange} required />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Shortening Title</Form.Label>
-                                <Form.Control type="text" name="shortTitle" value={newContent.shortTitle} onChange={handleChange} required />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows={3} name="description" value={newContent.description} onChange={handleChange} required />
-                            </Form.Group>
-                            <Button className="btn-gradient-1" size="sm" type="submit">
-                                Save Changes
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-
-                <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>View Full Content</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {selectedContent && (
-                            <div>
-                                <img src={selectedContent.image} alt="Content" className="mb-3" style={{ width: "100%", borderRadius: "5px" }} />
-                                <h5>{selectedContent.title}</h5>
-                                <h6 className="text-muted">{selectedContent.shortTitle}</h6>
-                                <p>{selectedContent.description}</p>
-                            </div>
-                        )}
-                    </Modal.Body>
-                </Modal>
-                <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit Content</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleEditSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Title</Form.Label>
-                                <Form.Control type="text" name="title" value={editContent?.title || ''} onChange={handleEditChange} required />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Short Title</Form.Label>
-                                <Form.Control type="text" name="shortTitle" value={editContent?.shortTitle || ''} onChange={handleEditChange} required />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows={3} name="description" value={editContent?.description || ''} onChange={handleEditChange} required />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Upload Image</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                />
-                            </Form.Group>
-                            {selectedImage && (
-                                <div className="mb-3">
-                                    <p>Image Preview:</p>
-                                    <img
-                                        src={selectedImage}
-                                        alt="Preview"
-                                        style={{ width: "100%", maxHeight: "200px", objectFit: "cover", borderRadius: "5px" }}
-                                    />
-                                </div>
-                            )}
-                             <Button className="btn-gradient-1" size="sm" type="submit">
-                                Save Changes
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-                <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Confirm Deletion</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        Are you sure you want to delete this content?
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                            Cancel
-                        </Button>
-                        <Button variant="danger" onClick={handleDelete}>
-                            Delete
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
+      <div className="superadmin-content col-md-9 col-lg-10 border-0" style={{ backgroundColor: "#fff" }}>
+        {/* Top Dashboard */}
+        <div className="top-dashboard d-flex justify-content-between align-items-center p-3">
+          <div className="left-section d-flex align-items-center">
+            <h3>OverView</h3>
+            <div className="search-wrapper position-relative ms-3" style={{ width: "300px" }}>
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="form-control ps-5"
+                style={{ width: "100%", borderRadius: "8px", border: "1px solid #ced4da" }}
+              />
+              <span
+                className="position-absolute"
+                style={{
+                  left: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#6c757d",
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-search"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+              </span>
             </div>
+          </div>
+          <div className="profile-section d-flex align-items-center">
+            <img
+              src={Avaterimg}
+              alt="Kamisato Aya"
+              style={{ width: "60px", height: "60px", borderRadius: "50%", marginRight: "10px" }}
+            />
+            <div className="text-section d-flex flex-column">
+              <span className="fs-4">Kamisato Aya</span>
+              <h5 className="" style={{ color: '#C2C5D0', fontSize: '16px' }}>Manager</h5>
+            </div>
+          </div>
         </div>
-    )
+
+        <Card className="mt-4 shadow-sm border-0">
+          <Card.Header className="border-0">
+            <Row>
+              <h3>Contact Us</h3>
+              <Col className="text-end mb-3">
+                <select
+                  className="form-select form-select-sm"
+                  style={{
+                    width: "auto", 
+                    display: "inline-block", 
+                    marginRight: "0px",
+                    color: '#070759',
+                    backgroundColor: '#EEEEEE',
+                  }}
+                >
+                  <option>Monthly</option>
+                  <option>Weekly</option>
+                </select>
+              </Col>
+            </Row>
+            <Row className="align-items-center">
+              <Col>
+                <h5>Blog Management</h5>
+              </Col>
+
+              <Col className="d-flex align-items-center justify-content-end gap-3 mt-4 me-0">
+                <div className="position-relative" style={{ width: '300px' }}>
+                  <span
+                    className="position-absolute"
+                    style={{
+                      left: '15px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: '#EEEEEE',
+                    }}
+                  >
+                    <i className="bi bi-search" style={{ fontSize: '16px' }}></i>
+                  </span>
+
+                  <input
+                    type="text"
+                    placeholder="Search by Name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="form-control ps-5"
+                    style={{
+                      borderRadius: '50px',
+                      backgroundColor: '#f1f1f1',
+                      border: 'none',
+                      height: '45px',
+                    }}
+                  />
+                </div>
+
+                <div className="d-flex align-items-center gap-3">
+                  <div
+                    className="rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: '45px',
+                      height: '45px',
+                      backgroundColor: '#EEEEEE',
+                    }}
+                  >
+                    <i className="bi bi-ui-checks" style={{ fontSize: '18px' }}></i>
+                  </div>
+
+                  <div
+                    className="rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: '45px',
+                      height: '45px',
+                      backgroundColor: '#EEEEEE',
+                    }}
+                  >
+                    <i className="bi bi-filter" style={{ fontSize: '28px' }}></i>
+                  </div>
+
+                  <div
+                    className="rounded-circle d-flex align-items-center justify-content-center"
+                    style={{
+                      width: '45px',
+                      height: '45px',
+                      backgroundColor: '#070759',
+                      color: '#fff',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setShowModal(true)}
+                  >
+                    <i className="bi bi-plus-lg" style={{ fontSize: '20px' }}></i>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Card.Header>
+          
+          <Card.Body className="border-0" style={{ backgroundColor: '#f8f9fa' }}>
+            <Table  hover className="table-modern border-0 borderless-table">
+              <thead style={{ backgroundColor: '#f8f9fa' }}>
+                <tr>
+                  <th style={{ color: '#070759' }}>S.No</th>
+                  <th style={{ color: '#070759' }}>First Name</th>
+                  <th style={{ color: '#070759' }}>Last Name</th>
+                  <th style={{ color: '#070759' }}>Email ID</th>
+                  <th style={{ color: '#070759' }}>Mobile Number</th>
+                  <th style={{ color: '#070759' }}>Message</th>
+                  <th style={{ width: "120px", color: '#070759' }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((item, index) => {
+                  const rowBgColor = getRowBackgroundColor(index);
+                  return (
+                    <tr key={item.id}>
+                      <td style={{ backgroundColor: rowBgColor }}>
+                        <input type="checkbox" className="mx-2" />
+                        {item.id}
+                      </td>
+                      <td style={{ backgroundColor: rowBgColor }}>
+                        <img
+                          src={item.image}
+                          alt="Content"
+                          style={{ 
+                            width: "50px", 
+                            height: "50px", 
+                            borderRadius: "5px", 
+                            objectFit: "cover" 
+                          }}
+                        />
+                      </td>
+                      <td style={{ backgroundColor: rowBgColor }}>{item.title}</td>
+                      <td style={{ backgroundColor: rowBgColor }}>{item.date}</td>
+                      <td style={{ backgroundColor: rowBgColor }}>{item.author}</td>
+                      <td
+                        className="text-truncate"
+                        style={{
+                          maxWidth: "200px",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          backgroundColor: rowBgColor
+                        }}
+                      >
+                        {item.content}
+                      </td>
+                      <td 
+                        className="d-flex gap-2 align-items-center justify-content-center" 
+                        style={{ backgroundColor: rowBgColor }}
+                      >
+                        <Button
+                          variant="info"
+                          size="sm"
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ 
+                            width: '30px', 
+                            height: '30px', 
+                            backgroundColor: '#0253F269',
+                            border: 'none'
+                          }}
+                          onClick={() => handleViewContent(item)}
+                        >
+                          <FontAwesomeIcon icon={faEye} style={{ color: 'black' }} />
+                        </Button>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ 
+                            width: '30px', 
+                            height: '30px', 
+                            backgroundColor: '#F4A10069',
+                            border: 'none'
+                          }}
+                          onClick={() => handleEditClick(item)}
+                        >
+                          <FontAwesomeIcon icon={faEdit} style={{ color: 'black' }} />
+                        </Button>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="rounded-circle d-flex align-items-center justify-content-center"
+                          style={{ 
+                            width: '30px', 
+                            height: '30px', 
+                            backgroundColor: '#EE7C7C',
+                            border: 'none'
+                          }}
+                          onClick={() => {
+                            setShowDeleteModal(true);
+                            setSelectedContent(item);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Card.Body>
+          
+          <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between" style={{ backgroundColor: '#F9F9F9' }}>
+            <small className="fw-bold">
+              Showing 1 to 10 of 7000 entries
+            </small>
+            <Nav>
+              <Pagination className="mb-2 mb-lg-0 custom-pagination text-black">
+                <Pagination.First>
+                  <span className="pagination-arrow">«</span>
+                </Pagination.First>
+                <Pagination.Prev>
+                  <span className="pagination-arrow">‹</span>
+                </Pagination.Prev>
+                <Pagination.Item active>
+                  <span className="text-white">1</span>
+                </Pagination.Item>
+                <Pagination.Item>
+                  <span className="text-black">2</span>
+                </Pagination.Item>
+                <Pagination.Item>
+                  <span className="text-black">3</span>
+                </Pagination.Item>
+                <Pagination.Ellipsis />
+                <Pagination.Next>
+                  <span className="pagination-arrow">›</span>
+                </Pagination.Next>
+                <Pagination.Last>
+                  <span className="pagination-arrow">»</span>
+                </Pagination.Last>
+              </Pagination>
+            </Nav>
+          </Card.Footer>
+        </Card>
+      </div>
+    </div>
+  );
 }
 
-export default AdmincContactForm
+export default Admincontactus;
