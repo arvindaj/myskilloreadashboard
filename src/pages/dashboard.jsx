@@ -6,11 +6,8 @@ import Avaterimg from '../assets/img/avatar image.png';
 
 const Superadmin = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State for search input
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [editContent, setEditContent] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
+ 
+  
 
   // Placeholder totals (replace with dynamic values later)
   const blogTotal = 120; // Example value
