@@ -6,6 +6,8 @@ import SuperAdminSidebar from "../component/dashboardsidebar";
 import { Table, Card, Row, Col, Button, Modal, Form, Pagination, Nav } from "react-bootstrap";
 import '../assets/css/superadmin/dasboard.css';
 import Avaterimg from '../assets/img/avatar image.png';
+import Blogimgview from '../assets/img/bogimg.png';
+
 
 const Adminblog = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,10 +63,10 @@ const Adminblog = () => {
     return index % 2 === 0 ? '#ffffff' : '#EEEEEE';
   };
 
-const handleViewContent = (item) => {
-  setSelectedContent(item);
-  setShowViewModal(true);
-};
+  const handleViewContent = (item) => {
+    setSelectedContent(item);
+    setShowViewModal(true);
+  };
 
   const handleEditClick = (item) => {
     navigate('/editblog'); // Navigate to EditBlog page
@@ -312,7 +314,7 @@ const handleViewContent = (item) => {
           </Card.Body>
 
           <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between" style={{ backgroundColor: '#F9F9F9' }}>
-            <small className="fw-bold">
+            <small className="fw-bold" style={{color:'#070759'}}>
               Showing 1 to 10 of 7000 entries
             </small>
             <Nav>
@@ -349,7 +351,7 @@ const handleViewContent = (item) => {
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
         <Modal.Body className="text-center p-4">
-          <h5 style={{ color: '#A2A2A2', marginBottom: '10px' }}>User Contact details Delete</h5>
+
           <p style={{ fontWeight: 600, fontSize: '16px' }}>
             Are you sure want to delete<br />
             this User Contact details details?
@@ -375,35 +377,72 @@ const handleViewContent = (item) => {
         </Modal.Body>
       </Modal>
 
-      {/* View Contact Modal */}
-      <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered backdrop="static">
+      <Modal
+        show={showViewModal}
+        onHide={() => setShowViewModal(false)}
+        centered
+        backdrop="static"
+      >
         <Modal.Body className="text-center p-4">
-          <h5 style={{ color: '#A2A2A2', marginBottom: '10px' }}>View User Contact details</h5>
-          <h6 style={{ color: '#1C0F4D', fontWeight: 600, marginBottom: '20px' }}>User Contact details</h6>
+          {/* Modal Header */}
+          <h5 className="fw-bold mb-4" style={{ color: '#070759' }}>User Blog Information</h5>
 
-          <div className="text-start" style={{ fontSize: '14px' }}>
-            <Row className="mb-2">
-              <Col xs={5} className="text-primary fw-semibold">First Name</Col>
-              <Col>{selectedContent?.author?.split(" ")[0]}</Col>
+          {/* Blog Details */}
+          <div className="text-start px-2" style={{ fontSize: '14px' }}>
+            {/* Image */}
+            <Row className="mb-3 text-center">
+              <Col>
+                <img
+                  src={Blogimgview}
+                  alt="Blog"
+                  className=""
+                  style={{ width: '280px', height: '160px', objectFit: 'cover' }}
+                />
+              </Col>
             </Row>
+
+            {/* Title */}
             <Row className="mb-2">
-              <Col xs={5} className="text-primary fw-semibold">Last Name</Col>
-              <Col>{selectedContent?.author?.split(" ")[1]}</Col>
+              <Col xs={5} className="fw-semibold mb-3" style={{ color: '#070759' }}>Title</Col>
+              <Col >
+                {selectedContent?.title || '-'}
+              </Col>
             </Row>
+
+            {/* Author */}
             <Row className="mb-2">
-              <Col xs={5} className="text-primary fw-semibold">Email-ID</Col>
-              <Col>ramkumar@gmail.com</Col> {/* Replace with actual data if available */}
+              <Col xs={5} className="fw-semibold mb-3 " style={{ color: '#070759' }}>Author</Col>
+              <Col >
+                {selectedContent?.author || '-'}
+              </Col>
             </Row>
+
+            {/* Date */}
             <Row className="mb-2">
-              <Col xs={5} className="text-primary fw-semibold">Mobile Number</Col>
-              <Col>7826379021</Col> {/* Replace with actual data if available */}
+              <Col xs={5} className="fw-semibold mb-3" style={{ color: '#070759' }}>Date</Col>
+              <Col >
+                {selectedContent?.date || '-'}
+              </Col>
             </Row>
+
+            {/* Short Content */}
             <Row className="mb-2">
-              <Col xs={5} className="text-primary fw-semibold">Message</Col>
-              <Col>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Feugiat nulla suspendisse tortor aene.</Col>
+              <Col xs={5} className="fw-semibold mb-3" style={{ color: '#070759' }}>Content</Col>
+              <Col >
+                {selectedContent?.content?.substring(0, 60) || '-'}
+              </Col>
+            </Row>
+
+            {/* Full Content */}
+            <Row className="mb-2">
+              <Col xs={5} className="fw-semibold mb-3" style={{ color: '#070759' }}>Full Content</Col>
+              <Col style={{ whiteSpace: 'pre-line' }}>
+                {selectedContent?.content || 'No content available.'}
+              </Col>
             </Row>
           </div>
 
+          {/* Close Button */}
           <Button
             onClick={() => setShowViewModal(false)}
             style={{
@@ -418,6 +457,8 @@ const handleViewContent = (item) => {
           </Button>
         </Modal.Body>
       </Modal>
+
+
 
 
 

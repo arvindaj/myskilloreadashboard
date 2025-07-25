@@ -12,6 +12,7 @@ import AdmincContactForm from './pages/admincontactus'
 import AddBlogs from './pages/addblog'
 import EditBlogs from './pages/editblog'
 import ViewBlogs from './pages/viewblog'
+import EditContact from './pages/editcontact'
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
       <Route path="/ViewBlogs" element={<ViewBlogs />} />
       <Route path="/ViewBlogs" element={<ViewBlogs />} />
       <Route path="/editblog" element={<EditBlogs />} />
+      <Route path="/editcontact" element={<EditContact />} />
 
 
     </Routes>

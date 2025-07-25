@@ -4,7 +4,7 @@ import SuperAdminSidebar from '../component/dashboardsidebar';
 import Avaterimg from '../assets/img/avatar image.png';
 import '../assets/css/superadmin/dasboard.css';
 
-const EditBlog = () => {
+const EditContact = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
@@ -39,7 +39,7 @@ const EditBlog = () => {
         <div className="superadmin-content col-md-9">
           <div className="top-dashboards d-flex justify-content-between align-items-center p-3">
             <div className="left-section d-flex align-items-center">
-              <h3>Edit blog</h3>
+              <h3>Edit Contact</h3>
               <div className="search-wrapper position-relative ms-3" style={{ width: "300px" }}>
                 <input
                   type="text"
@@ -152,4 +152,4 @@ const EditBlog = () => {
   );
 };
 
-export default EditBlog;
+export default EditContact;

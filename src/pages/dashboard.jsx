@@ -62,16 +62,7 @@ const Superadmin = () => {
     return index % 2 === 0 ? '#ffffff' : '#EEEEEE';
   };
 
-  const handleViewContent = (content) => {
-    setSelectedContent(content);
-    setShowViewModal(true);
-  };
 
-  const handleEditClick = (content) => {
-    setEditContent(content);
-    setSelectedImage(content.image); // Set initial image for preview
-    setShowEditModal(true);
-  };
 
   const visitsData = [
     { page: "/dashboard", visits: 1200, unique: 800 },
